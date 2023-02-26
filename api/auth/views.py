@@ -79,6 +79,7 @@ class Login(Resource):
 class Refresh(Resource):
     @jwt_required(refresh=True)
     def post(self):
+        print(get_jwt_identity())
         username = get_jwt_identity()
         access_token = create_access_token(identity=username)
         return {'access_token': access_token}, HTTPStatus.OK
