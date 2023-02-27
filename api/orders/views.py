@@ -25,11 +25,32 @@ order_model=order_namespace.model(
 
 @order_namespace.route('/orders/')
 class OrderGetCreate(Resource):
+    @order_namespace.marshal_with(order_model)
+    @order_namespace.doc(description="Retrieve all orders")
+    @jwt_required()
     def get(self):
-        pass
+        orders=Order.query.all()
+        return orders, HTTPStatus.OK
 
+    @order_namespace.expect(order_model)
+    @order_namespace.marshal_with(order_model)
+    @order_namespace.doc(
+        description="Place an order"
+    )
+    @jwt_required()
     def post(self):
-        pass
+        data=order_namespace.payload
+        username=get_jwt_identity()
+        print(username)
+        current_user=User.query.filter_by(username=username).first()
+        new_order=Order(
+            size=data['size'],
+            quantity=data['quantity'],
+            flavour=data['flavour']
+        )
+        new_order.user=current_user
+        new_order.save()
+        return new_order , HTTPStatus.CREATED
 
 
 @order_namespace.route('/order/<int:order_id>')
