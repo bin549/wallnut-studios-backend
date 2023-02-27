@@ -36,7 +36,7 @@ class ProdConfig(Config):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     DEBUG = config('DEBUG', cast=bool)
 
-
+ 
 config_dict = {
     'dev': DevConfig,
     'testing': TestConfig,

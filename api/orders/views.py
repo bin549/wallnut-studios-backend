@@ -27,7 +27,6 @@ order_status_model = order_namespace.model(
     }
 )
 
-
 @order_namespace.route('/orders/')
 class OrderGetCreate(Resource):
     @order_namespace.marshal_with(order_model)
