@@ -7,7 +7,6 @@ from http import HTTPStatus
 from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_required, get_jwt_identity)
 from werkzeug.exceptions import Conflict, BadRequest
 
-
 auth_namespace = Namespace('auth', description="a namespace for authentication")
 
 signup_model = auth_namespace.model(
