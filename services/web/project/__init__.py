@@ -12,7 +12,7 @@ from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.config.from_object("project.config.Config")
-db = SQLAlchemy(app)
+db = SQLAlchemy(app) 
 
 
 class User(db.Model):
@@ -28,7 +28,7 @@ class User(db.Model):
  
 @app.route("/")
 def hello_world():
-    return jsonify(hello="world")
+    return jsonify(hello="worldworldworldworld")
 
 
 @app.route("/static/<path:filename>")
