@@ -25,7 +25,7 @@ class User(db.Model):
     def __init__(self, email):
         self.email = email
 
-
+ 
 @app.route("/")
 def hello_world():
     return jsonify(hello="world")
