@@ -6,7 +6,7 @@ from ...models.users import User
 from http import HTTPStatus
 from ...utils.db import db
 
-order_namespace = Namespace('orders', description="Namespace for orders")
+order_namespace = Namespace('api/orders', description="Namespace for orders")
 
 order_model = order_namespace.model(
     'Order', {
@@ -42,7 +42,7 @@ class OrderGetCreate(Resource):
     @order_namespace.marshal_with(order_model)
     @order_namespace.doc(
         description="Place an order"
-    )
+    ) 
     @jwt_required()
     def post(self):
         username = get_jwt_identity()
