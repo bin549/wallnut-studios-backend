@@ -1,56 +1,43 @@
-import os
-
-from flask import (
-    Flask,
-    jsonify,
-    send_from_directory,
-    request,
-)
-from flask_sqlalchemy import SQLAlchemy
-from werkzeug.utils import secure_filename
-
-
-app = Flask(__name__)
-app.config.from_object("project.config.Config")
-db = SQLAlchemy(app) 
+from flask import Flask
+from .api.auth.views import auth_namespace
+from .api.orders.views import order_namespace
+from .config.config import Config
+from .models.users import User
+from .models.orders import Order
+from .utils.db import db
+from flask_restx import Api
+from flask_jwt_extended import JWTManager
+from flask_migrate import Migrate
 
 
-class User(db.Model):
-    __tablename__ = "users"
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object(Config)
+    authorizations = {
+        "Bearer Auth": {
+            'type': "apiKey",
+            'in': 'header',
+            'name': "Authorization",
+            'description': "Add a JWT with ** Bearer &lt;JWT&gt; to authorize"
+        }
+    }
+    api = Api(app,
+              title="Pizza Delivery API",
+              description="A REST API for a Pizza Delievry service",
+              authorizations=authorizations,
+              security="Bearer Auth"
+              )
+    api.add_namespace(order_namespace)
+    api.add_namespace(auth_namespace, path='/auth')
+    db.init_app(app)
+    jwt = JWTManager(app)
+    migrate = Migrate(app, db)
 
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(128), unique=True, nullable=False)
-    active = db.Column(db.Boolean(), default=True, nullable=False)
-
-    def __init__(self, email):
-        self.email = email
-
- 
-@app.route("/")
-def hello_world():
-    return jsonify(hello="worldworldworldworld")
-
-
-@app.route("/static/<path:filename>")
-def staticfiles(filename):
-    return send_from_directory(app.config["STATIC_FOLDER"], filename)
-
-
-@app.route("/media/<path:filename>")
-def mediafiles(filename):
-    return send_from_directory(app.config["MEDIA_FOLDER"], filename)
-
-
-@app.route("/upload", methods=["GET", "POST"])
-def upload_file():
-    if request.method == "POST":
-        file = request.files["file"]
-        filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config["MEDIA_FOLDER"], filename))
-    return """
-    <!doctype html>
-    <title>upload new File</title>
-    <form action="" method=post enctype=multipart/form-data>
-      <p><input type=file name=file><input type=submit value=Upload>
-    </form>
-    """
+    @app.shell_context_processor
+    def make_shell_context():
+        return {
+            'db': db,
+            'User': User,
+            'Order': Order,
+        }
+    return app
