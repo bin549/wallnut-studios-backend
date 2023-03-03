@@ -22,8 +22,7 @@ order_model = order_namespace.model(
 
 order_status_model = order_namespace.model(
     'OrderStatus', {
-        'order_status': fields.String(description="Order status",
-                                      enums=['PENDING', 'IN_TRANSIT', 'DELIVERED'])
+        'order_status': fields.String(description="Order status", enums=['PENDING', 'IN_TRANSIT', 'DELIVERED'])
     }
 )
 
