@@ -8,6 +8,7 @@ from .utils.db import db
 from flask_restx import Api
 from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
+from flask_cors import CORS
 
 
 def create_app():
@@ -32,6 +33,7 @@ def create_app():
     db.init_app(app)
     jwt = JWTManager(app)
     migrate = Migrate(app, db)
+    CORS(app)
 
     @app.shell_context_processor
     def make_shell_context():
@@ -40,4 +42,5 @@ def create_app():
             'User': User,
             'Order': Order,
         }
+
     return app

@@ -32,3 +32,4 @@ six==1.16.0
 toml==0.10.2
 Werkzeug==2.2.3
 zipp==3.6.0
+flask-cors==3.0.10
