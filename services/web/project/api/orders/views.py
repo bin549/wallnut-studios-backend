@@ -149,7 +149,6 @@ class UpdateOrderStatus(Resource):
     )
     # @jwt_required()
     def patch(self, order_id):
-        print(1)
         data = order_namespace.payload
         order_to_update = Order.get_by_id(order_id)
         order_to_update.order_status = data['order_status']
