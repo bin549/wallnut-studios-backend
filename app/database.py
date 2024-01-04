@@ -25,7 +25,7 @@ skill_table = sqlalchemy.Table(
     sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True, autoincrement=True),
     sqlalchemy.Column("name", sqlalchemy.String),
     sqlalchemy.Column("tag_id", sqlalchemy.ForeignKey("t_skill_tag.id"), nullable=False),
-    sqlalchemy.Column("profile_id", sqlalchemy.ForeignKey("t_profile.id"), nullable=False),
+    sqlalchemy.Column("profile_id", sqlalchemy.ForeignKey("t_profile.id"), nullable=False)
 )
 
 project_table = sqlalchemy.Table(
@@ -48,7 +48,7 @@ engine = sqlalchemy.create_engine(
     config.DATABASE_URL
 )
 
-metadata.drop_all(engine)
+# metadata.drop_all(engine)
 metadata.create_all(engine)
 database = databases.Database(
     config.DATABASE_URL, force_rollback=config.DB_FORCE_ROLL_BACK
