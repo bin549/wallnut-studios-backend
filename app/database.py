@@ -24,8 +24,14 @@ skill_table = sqlalchemy.Table(
     metadata,
     sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True, autoincrement=True),
     sqlalchemy.Column("name", sqlalchemy.String),
-    sqlalchemy.Column("tag_id", sqlalchemy.ForeignKey("t_skill_tag.id"), nullable=False),
-    sqlalchemy.Column("profile_id", sqlalchemy.ForeignKey("t_profile.id"), nullable=False)
+    sqlalchemy.Column("tag_id", sqlalchemy.ForeignKey("t_skill_tag.id"), nullable=False)
+)
+
+project_type_table = sqlalchemy.Table(
+    "t_project_type",
+    metadata,
+    sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True, autoincrement=True),
+    sqlalchemy.Column("name", sqlalchemy.String)
 )
 
 project_table = sqlalchemy.Table(
@@ -33,7 +39,32 @@ project_table = sqlalchemy.Table(
     metadata,
     sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True, autoincrement=True),
     sqlalchemy.Column("name", sqlalchemy.String),
+    sqlalchemy.Column("type_id", sqlalchemy.ForeignKey("t_project_type.id"), nullable=False),
     sqlalchemy.Column("profile_id", sqlalchemy.ForeignKey("t_profile.id"), nullable=False)
+)
+
+music_table = sqlalchemy.Table(
+    "t_music",
+    metadata,
+    sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True, autoincrement=True),
+    sqlalchemy.Column("name", sqlalchemy.String),
+    sqlalchemy.Column("profile_id", sqlalchemy.ForeignKey("t_profile.id"), nullable=False)
+)
+
+write_table = sqlalchemy.Table(
+    "t_write",
+    metadata,
+    sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True, autoincrement=True),
+    sqlalchemy.Column("name", sqlalchemy.String),
+    sqlalchemy.Column("profile_id", sqlalchemy.ForeignKey("t_profile.id"), nullable=False)
+)
+
+music_skill_table = sqlalchemy.Table(
+    "t_music_skill",
+    metadata,
+    sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True, autoincrement=True),
+    sqlalchemy.Column("music_id", sqlalchemy.ForeignKey("t_music.id"), nullable=False),
+    sqlalchemy.Column("skill_id", sqlalchemy.ForeignKey("t_skill.id"), nullable=False)
 )
 
 project_skill_table = sqlalchemy.Table(
