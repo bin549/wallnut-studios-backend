@@ -1,6 +1,6 @@
-module wallnut-studios-backend-go
+module gin
 
-go 1.21
+go 1.21.5
 
 require (
 	github.com/bytedance/sonic v1.10.2 // indirect
