@@ -1,0 +1,10 @@
+POST http://localhost:8000/api/project/create
+content-type: application/json
+
+{
+  "id": 1,
+  "name": "Test project!!!",
+  "type_id": 1,
+  "profile_id": 1
+}
+
