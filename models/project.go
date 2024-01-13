@@ -30,7 +30,7 @@ func (p Project) Save() error {
 }
 
 func GetAllProjects() ([]Project, error) {
-	query := "SELECT * FROM projects"
+	query := "SELECT * FROM t_project"
 	rows, err := db.DB.Query(query)
 	if err != nil {
 		return nil, err
@@ -45,4 +45,41 @@ func GetAllProjects() ([]Project, error) {
 		projects = append(projects, project)
 	}
 	return projects, nil
+}
+
+func GetProjectById(id int64) (*Project, error) {
+	query := "SELECT * FROM t_project WHERE id = ?"
+	row := db.DB.QueryRow(query, id)
+	var project Project
+	err := row.Scan(&project.ID, &project.Name, &project.TypeId, &project.ProfileId)
+	if err != nil {
+		return nil, err
+	}
+	return &project, err
+}
+
+func (project Project) Update() error {
+	query := `
+		UPDATE t_events
+		SET name = ?, type_id = ?, profile_id = ?
+		WHERE id = ?
+	`
+	stmt, err := db.DB.Prepare(query)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+	_, err = stmt.Exec(project.Name, project.TypeId, project.ProfileId, project.ID)
+	return err
+}
+
+func (project Project) Delete() error {
+	query := "DELETE FROM t_project WHERE id = ?"
+	stmt, err := db.DB.Prepare(query)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+	_, err = stmt.Exec(project.ID)
+	return err
 }
