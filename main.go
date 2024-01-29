@@ -1,14 +1,24 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
-	"wallnut-studios.com/rest-api/db"
-	"wallnut-studios.com/rest-api/routes"
+	"flag"
+	"fmt"
+	"log"
+	"net/http"
 )
 
+const port = 5000
+
+type application struct {
+	Domain string
+}
+
 func main() {
-	db.InitDb()
-	server := gin.Default()
-	routes.RegisterRoutes(server)
-	server.Run(":8000")
+	var app application
+	flag.StringVar(&app.Domain, "domain", "example.com", "domain")
+	log.Println("Starting application on port", port)
+	err := http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
+	if err != nil {
+		log.Fatal(err)
+	}
 }

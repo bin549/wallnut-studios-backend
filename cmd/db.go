@@ -1,4 +1,4 @@
-package db
+package cmd
 
 import (
 	"database/sql"
