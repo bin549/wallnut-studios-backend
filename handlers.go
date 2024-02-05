@@ -17,3 +17,6 @@ func (app *application) Home(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Println(payload)
 }
+
+func (app *application) getSkills(w http.ResponseWriter, r *http.Request) {
+}

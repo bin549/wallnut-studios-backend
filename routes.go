@@ -11,6 +11,7 @@ func (app *application) routes() http.Handler {
 	mux.Use(middleware.Recoverer)
 	mux.Use(app.enableCORS)
 	mux.Get("/", app.Home)
+	mux.Get("/api/skill/list", app.getSkills)
 
 	return mux
 }
