@@ -19,4 +19,10 @@ func (app *application) Home(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) getSkills(w http.ResponseWriter, r *http.Request) {
+	skills, err := app.DB.GetSkills()
+	if err != nil {
+		app.errorJSON(w, err)
+		return
+	}
+	_ = app.writeJSON(w, http.StatusOK, skills)
 }

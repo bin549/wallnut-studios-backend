@@ -13,7 +13,7 @@ const port = 5000
 
 type application struct {
 	DSN    string
-	DB     repository.DatabaseRepository
+	DB     repository.DatabaseRepo
 	Domain string
 }
 
