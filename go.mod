@@ -2,8 +2,9 @@ module wallnut-studios.com/rest-api
 
 go 1.21.5
 
+require github.com/go-chi/chi/v5 v5.0.7
+
 require (
-	github.com/go-chi/chi/v5 v5.0.7 // indirect
 	github.com/golang-jwt/jwt/v4 v4.4.2 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgconn v1.13.0 // indirect

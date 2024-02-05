@@ -1,7 +1,7 @@
 package models
 
 import (
-	"wallnut-studios.com/rest-api/cmd"
+	"wallnut-studios.com/rest-api/cmd/api"
 )
 
 type Project struct {
@@ -17,7 +17,7 @@ func (p Project) Save() error {
 	query := `
 	INSERT INTO events(name, type_id, profile_id) 
 	VALUES (?, ?, ?)`
-	stmt, err := cmd.DB.Prepare(query)
+	stmt, err := main.DB.Prepare(query)
 	if err != nil {
 		return err
 	}
@@ -33,7 +33,7 @@ func (p Project) Save() error {
 
 func GetAllProjects() ([]Project, error) {
 	query := "SELECT * FROM t_project"
-	rows, err := cmd.DB.Query(query)
+	rows, err := main.DB.Query(query)
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +51,7 @@ func GetAllProjects() ([]Project, error) {
 
 func GetProjectById(id int64) (*Project, error) {
 	query := "SELECT * FROM t_project WHERE id = ?"
-	row := cmd.DB.QueryRow(query, id)
+	row := main.DB.QueryRow(query, id)
 	var project Project
 	err := row.Scan(&project.ID, &project.Name, &project.TypeId, &project.ProfileId)
 	if err != nil {
@@ -66,7 +66,7 @@ func (project Project) Update() error {
 		SET name = ?, type_id = ?, profile_id = ?
 		WHERE id = ?
 	`
-	stmt, err := cmd.DB.Prepare(query)
+	stmt, err := main.DB.Prepare(query)
 	if err != nil {
 		return err
 	}
@@ -77,7 +77,7 @@ func (project Project) Update() error {
 
 func (project Project) Delete() error {
 	query := "DELETE FROM t_project WHERE id = ?"
-	stmt, err := cmd.DB.Prepare(query)
+	stmt, err := main.DB.Prepare(query)
 	if err != nil {
 		return err
 	}

@@ -16,8 +16,9 @@ type application struct {
 func main() {
 	var app application
 	flag.StringVar(&app.Domain, "domain", "example.com", "domain")
+	flag.Parse()
 	log.Println("Starting application on port", port)
-	err := http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
+	err := http.ListenAndServe(fmt.Sprintf(":%d", port), app.routes())
 	if err != nil {
 		log.Fatal(err)
 	}
