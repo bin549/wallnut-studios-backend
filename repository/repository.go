@@ -8,4 +8,5 @@ import (
 type DatabaseRepo interface {
 	Connection() *sql.DB
 	GetSkills() ([]*models.Skill, error)
+	GetSkillTags() ([]*models.SkillTag, error)
 }
