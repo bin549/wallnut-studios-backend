@@ -55,6 +55,8 @@ func (m *PostgresDBRepo) GetSkills() ([]*models.Skill, error) {
 			id, name, tag_id
 		from
 			t_skill
+		order by
+		    id asc
 	`)
 	rows, err := m.DB.QueryContext(ctx, query)
 	if err != nil {
