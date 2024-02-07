@@ -2,11 +2,11 @@ package repository
 
 import (
 	"database/sql"
-	"wallnut-studios.com/rest-api/pojo"
+	"wallnut-studios.com/rest-api/models"
 )
 
 type DatabaseRepo interface {
 	Connection() *sql.DB
-	GetSkills() ([]*pojo.Skill, error)
-	GetSkillTags() ([]*pojo.SkillTag, error)
+	GetSkills() ([]*models.Skill, error)
+	GetSkillTags() ([]*models.SkillTag, error)
 }

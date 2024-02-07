@@ -1,4 +1,4 @@
-package pojo
+package models
 
 type Music struct {
 }
