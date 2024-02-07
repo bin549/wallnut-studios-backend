@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 	"time"
-	"wallnut-studios.com/rest-api/models"
+	"wallnut-studios.com/rest-api/pojo"
 )
 
 type PostgresDBRepo struct {
@@ -18,7 +18,7 @@ func (m *PostgresDBRepo) Connection() *sql.DB {
 	return m.DB
 }
 
-func (m *PostgresDBRepo) GetSkillTags() ([]*models.SkillTag, error) {
+func (m *PostgresDBRepo) GetSkillTags() ([]*pojo.SkillTag, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 	query := fmt.Sprintf(`
@@ -32,9 +32,9 @@ func (m *PostgresDBRepo) GetSkillTags() ([]*models.SkillTag, error) {
 		return nil, err
 	}
 	defer rows.Close()
-	var skill_tags []*models.SkillTag
+	var skill_tags []*pojo.SkillTag
 	for rows.Next() {
-		var skill_tag models.SkillTag
+		var skill_tag pojo.SkillTag
 		err := rows.Scan(
 			&skill_tag.ID,
 			&skill_tag.Name,
@@ -47,7 +47,7 @@ func (m *PostgresDBRepo) GetSkillTags() ([]*models.SkillTag, error) {
 	return skill_tags, err
 }
 
-func (m *PostgresDBRepo) GetSkills() ([]*models.Skill, error) {
+func (m *PostgresDBRepo) GetSkills() ([]*pojo.Skill, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 	query := fmt.Sprintf(`
@@ -63,9 +63,9 @@ func (m *PostgresDBRepo) GetSkills() ([]*models.Skill, error) {
 		return nil, err
 	}
 	defer rows.Close()
-	var skills []*models.Skill
+	var skills []*pojo.Skill
 	for rows.Next() {
-		var skill models.Skill
+		var skill pojo.Skill
 		err := rows.Scan(
 			&skill.ID,
 			&skill.Name,
