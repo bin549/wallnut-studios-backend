@@ -22,9 +22,9 @@ func (m *PostgresDBRepo) GetSkillTags() ([]*models.SkillTag, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 	query := fmt.Sprintf(`
-		select 
+		select
 			id, name
-		from 
+		from
 			t_skill_tag
 	`)
 	rows, err := m.DB.QueryContext(ctx, query)
@@ -51,7 +51,7 @@ func (m *PostgresDBRepo) GetSkills() ([]*models.Skill, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 	query := fmt.Sprintf(`
-		select 
+		select
 			id, name, tag_id
 		from
 			t_skill
@@ -77,4 +77,43 @@ func (m *PostgresDBRepo) GetSkills() ([]*models.Skill, error) {
 		skills = append(skills, &skill)
 	}
 	return skills, err
+}
+
+func (m *PostgresDBRepo) GetProjects(typeId ...int) ([]*models.Project, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+	where := ""
+	if len(typeId) > 0 {
+		where = fmt.Sprintf("where type_id = %d ", typeId[0])
+	}
+	query := fmt.Sprintf(`
+		select
+			id, name, type_id, profile_id, cover, link
+		from
+			t_project %s
+		order by
+		    id asc
+	`, where)
+	rows, err := m.DB.QueryContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var projects []*models.Project
+	for rows.Next() {
+		var project models.Project
+		err := rows.Scan(
+			&project.ID,
+			&project.Name,
+			&project.TypeId,
+			&project.ProfileId,
+			&project.Cover,
+			&project.Link,
+		)
+		if err != nil {
+			return nil, err
+		}
+		projects = append(projects, &project)
+	}
+	return projects, err
 }

@@ -3,6 +3,10 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"strconv"
+
+	"github.com/go-chi/chi/v5"
+	"wallnut-studios.com/rest-api/models"
 )
 
 func (app *application) Home(w http.ResponseWriter, r *http.Request) {
@@ -18,12 +22,6 @@ func (app *application) Home(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(payload)
 }
 
-type SkillDto struct {
-	Id   int    `json:"id"`
-	Name string `json:"name"`
-	Tag  string `json:"tag"`
-}
-
 func (app *application) getSkills(w http.ResponseWriter, r *http.Request) {
 	skills, err := app.DB.GetSkills()
 	skill_tags, err := app.DB.GetSkillTags()
@@ -31,9 +29,9 @@ func (app *application) getSkills(w http.ResponseWriter, r *http.Request) {
 	for _, skill_tag := range skill_tags {
 		skill_tag_map[skill_tag.ID] = skill_tag.Name
 	}
-	var skill_dtos []SkillDto
+	var skill_dtos []models.SkillDto
 	for _, skill := range skills {
-		var skill_dto SkillDto
+		var skill_dto models.SkillDto
 		skill_dto.Id = skill.ID
 		skill_dto.Name = skill.Name
 		skill_dto.Tag = skill_tag_map[skill.TagId]
@@ -44,4 +42,23 @@ func (app *application) getSkills(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	_ = app.writeJSON(w, http.StatusOK, skill_dtos)
+}
+
+func (app *application) getProjects(w http.ResponseWriter, r *http.Request) {
+	projects, err := app.DB.GetProjects()
+	if err != nil {
+		app.errorJSON(w, err)
+		return
+	}
+	_ = app.writeJSON(w, http.StatusOK, projects)
+}
+
+func (app *application) getProjectByTypeId(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.Atoi(chi.URLParam(r, "id"))
+	projects, err := app.DB.GetProjects(id)
+	if err != nil {
+		app.errorJSON(w, err)
+		return
+	}
+	_ = app.writeJSON(w, http.StatusOK, projects)
 }

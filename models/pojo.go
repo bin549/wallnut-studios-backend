@@ -28,6 +28,8 @@ type Project struct {
 	Name      string `binding:"required"`
 	TypeId    int64  `binding:"required"`
 	ProfileId int64  `binding:"required"`
+	Cover     string `binding:"required"`
+	Link      string `binding:"required"`
 }
 
 var projects = []Project{}
