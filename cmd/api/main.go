@@ -1,4 +1,4 @@
-package api
+package main
 
 import (
 	"flag"
@@ -28,8 +28,9 @@ func main() {
 	}
 	app.DB = &dbrepo.PostgresDBRepo{DB: conn}
 	log.Println("Starting application on port", port)
+	log.Println("Starting application on port", port)
 	err = http.ListenAndServe(fmt.Sprintf(":%d", port), app.routes())
-	if err != nil {
+	if err != nil && err != http.ErrServerClosed {
 		log.Fatal(err)
 	}
 }

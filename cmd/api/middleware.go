@@ -1,4 +1,4 @@
-package api
+package main
 
 import (
 	"net/http"
@@ -7,7 +7,7 @@ import (
 func (app *application) enableCORS(h http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		origin := r.Header.Get("Origin")
-		allowedOrigins := []string{"http://localhost:3000", "http://127.0.0.1:3000", "http://39.108.13.241:3000"}
+		allowedOrigins := []string{"http://localhost:3000", "http://127.0.0.1:3000", "http://120.79.61.213:3000"}
 		allowed := false
 		for _, allowOrigin := range allowedOrigins {
 			if origin == allowOrigin {
